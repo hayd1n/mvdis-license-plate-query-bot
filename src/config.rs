@@ -29,7 +29,7 @@ pub struct TelegramConfig {
 impl Default for TelegramConfig {
     fn default() -> Self {
         Self {
-            message_prefix: "\\[MVDIS License Plate Bot\\]".to_string(),
+            message_prefix: "\\[MVDIS License Plate Bot]".to_string(),
             bot_token: "".to_string(),
             chat_id: "".to_string(),
         }

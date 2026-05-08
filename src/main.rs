@@ -17,6 +17,11 @@ struct MatchedPlate {
 async fn main() -> anyhow::Result<()> {
     let config = load_config()?;
 
+    println!(
+        "Retry times: {}, Concurrency: {}",
+        config.client.retry_times, config.client.concurrency
+    );
+
     let mut all_matched_messages = Vec::new();
 
     for query in config.query.iter() {
@@ -37,7 +42,9 @@ async fn main() -> anyhow::Result<()> {
 
         let client = PoolClient::new(options)?;
 
+        let start_time = std::time::Instant::now();
         let results = client.execute().await?;
+        let elapsed = start_time.elapsed();
 
         // Filter and collect results by match patterns from config
         let mut matched_plates = Vec::new();
@@ -60,7 +67,10 @@ async fn main() -> anyhow::Result<()> {
         let total_plates = matched_plates.len();
         let total_results: usize = results.iter().map(|(_, plates)| plates.len()).sum();
 
-        println!("Matched plates: {} / {} total", total_plates, total_results);
+        println!(
+            "Matched plates: {} / {} total (took {:.2?})",
+            total_plates, total_results, elapsed
+        );
 
         for plate in &matched_plates {
             println!(
