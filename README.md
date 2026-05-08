@@ -12,20 +12,23 @@
 ## 🚀 快速開始
 
 ### 前置作業
+
 確保您的開發環境中已安裝 [Rust 及 Cargo](https://rustup.rs/)。
 
 ### 安裝與執行
 
 1. 複製本專案到本地端：
+
    ```bash
    git clone <YOUR_REPOSITORY_URL>
    cd mvdis-license-plate-query-bot
    ```
 
-2. 複製設定檔範本並進行設定（詳見下方[設定檔說明](#%E8%A8%AD%E5%AE%9A%E6%AA%94%E8%AA%AA%E6%98%8E)）：
+2. 複製設定檔範本並進行設定（詳見下方設定檔說明）：
    > 專案根目錄下需有一份 `config.toml`
 
 3. 編譯並執行程式：
+
    ```bash
    cargo run --release
    ```
@@ -47,6 +50,7 @@ concurrency = 20     # 同時發出請求的併發數（預設為系統的 CPU �
 支援 **Telegram** 與 **ntfy** 兩種通知管道。您可以根據需求啟用其中一個或同時啟用。
 
 **Telegram 設定**
+
 ```toml
 [notification.telegram]
 bot_token = "YOUR_TELEGRAM_BOT_TOKEN"  # 向 @BotFather 申請的機器人 Token
@@ -55,6 +59,7 @@ chat_id = "YOUR_CHAT_ID"               # 接收通知的對象（您的 User ID 
 ```
 
 **ntfy 設定**
+
 ```toml
 [notification.ntfy]
 server_url = "https://ntfy.sh" # 可選：若您使用自建的 ntfy 伺服器，可在此修改
