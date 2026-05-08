@@ -1,4 +1,5 @@
 mod config;
+mod notification;
 
 use self::config::load_config;
 use mvdis_license_plate_query::{
@@ -15,6 +16,8 @@ struct MatchedPlate {
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let config = load_config()?;
+
+    let mut all_matched_messages = Vec::new();
 
     for query in config.query.iter() {
         println!(
@@ -59,13 +62,41 @@ async fn main() -> anyhow::Result<()> {
 
         println!("Matched plates: {} / {} total", total_plates, total_results);
 
-        for plate in matched_plates {
+        for plate in &matched_plates {
             println!(
                 "  - {}: {} (${})",
                 plate.station.as_name(),
                 plate.plate_no,
                 plate.price
             );
+        }
+
+        if !matched_plates.is_empty() {
+            let mut message = format!(
+                "🚗 <b>{} {}</b>\n",
+                query.plate_ver.as_name(),
+                query.plate_type.as_name()
+            );
+            for plate in &matched_plates {
+                message.push_str(&format!(
+                    "  - {}: <b>{}</b> (${})\n",
+                    plate.station.as_name(),
+                    plate.plate_no,
+                    plate.price
+                ));
+            }
+            all_matched_messages.push(message);
+        }
+    }
+
+    if !all_matched_messages.is_empty() {
+        if let Some(telegram) = &config.notification.telegram {
+            let full_message = format!(
+                "{}\n\n{}",
+                telegram.message_prefix,
+                all_matched_messages.join("\n")
+            );
+            notification::send_telegram(telegram, &full_message).await;
         }
     }
 
