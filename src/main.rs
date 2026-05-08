@@ -73,13 +73,13 @@ async fn main() -> anyhow::Result<()> {
 
         if !matched_plates.is_empty() {
             let mut message = format!(
-                "🚗 <b>{} {}</b>\n",
+                "🚗 *{} {}*\n",
                 query.plate_ver.as_name(),
                 query.plate_type.as_name()
             );
             for plate in &matched_plates {
                 message.push_str(&format!(
-                    "  - {}: <b>{}</b> (${})\n",
+                    "  - {}: *{}* (${})\n",
                     plate.station.as_name(),
                     plate.plate_no,
                     plate.price
@@ -90,13 +90,10 @@ async fn main() -> anyhow::Result<()> {
     }
 
     if !all_matched_messages.is_empty() {
-        if let Some(telegram) = &config.notification.telegram {
-            let full_message = format!(
-                "{}\n\n{}",
-                telegram.message_prefix,
-                all_matched_messages.join("\n")
-            );
-            notification::send_telegram(telegram, &full_message).await;
+        let notifiers = notification::create_notifiers(config.notification);
+        let raw_message = all_matched_messages.join("\n");
+        for notifier in notifiers {
+            let _ = notifier.notify(&raw_message).await;
         }
     }
 

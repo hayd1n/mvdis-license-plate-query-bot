@@ -29,17 +29,30 @@ pub struct TelegramConfig {
 impl Default for TelegramConfig {
     fn default() -> Self {
         Self {
-            message_prefix: "[MVDIS License Plate Bot]".to_string(),
+            message_prefix: "\\[MVDIS License Plate Bot\\]".to_string(),
             bot_token: "".to_string(),
             chat_id: "".to_string(),
         }
     }
 }
 
+fn default_ntfy_server_url() -> String {
+    "https://ntfy.sh".to_string()
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct NtfyConfig {
+    #[serde(default = "default_ntfy_server_url")]
+    pub server_url: String,
+    pub topic: String,
+}
+
 #[derive(Debug, serde::Deserialize, Default)]
 pub struct NotificationConfig {
     #[serde(default)]
     pub telegram: Option<TelegramConfig>,
+    #[serde(default)]
+    pub ntfy: Option<NtfyConfig>,
 }
 
 #[derive(Debug, serde::Deserialize)]
