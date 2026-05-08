@@ -1,0 +1,27 @@
+[client]
+# retry_times = 3
+# concurrency = 20
+
+[notification.telegram]
+message_prefix = '\[MVDIS License Plate Bot]'
+bot_token = "***"
+chat_id = "***"
+
+[notification.ntfy]
+topic = "***"
+
+[[query]]
+plate_ver = "new"
+plate_type = "motorcycle550ccBelow"
+# stations = ["taipeiCity", "shilin", "kaohsiungCity"]
+matchs = ["587"]
+
+[[query]]
+plate_ver = "new"
+plate_type = "motorcycleNormalHeavy"
+matchs = ["987"]
+
+[[query]]
+plate_ver = "new"
+plate_type = "motorcycleElectricNormalHeavy"
+matchs = ["5487", "520", "1314"]
