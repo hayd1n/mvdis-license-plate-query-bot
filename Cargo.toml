@@ -5,8 +5,8 @@ edition = "2024"
 
 [dependencies]
 anyhow = "1"
-mvdis-license-plate-query = { git = "https://github.com/hayd1n/mvdis-license-plate-query", rev = "85e9051e81728329854470843f187dcd367d9cde" }
-reqwest = { version = "0.13.3", features = ["json"] }
-serde = "1.0.228"
-tokio = { version = "1.52.3", features = ["full"] }
-toml = "1.1.2"
+mvdis-license-plate-query = { git = "https://github.com/hayd1n/mvdis-license-plate-query", rev = "a1f53d8f6a91c0deb97795b4d4bb03fbc3e3a0c2" }
+reqwest = { version = "0.13", features = ["rustls", "json"] }
+serde = "1"
+tokio = { version = "1", features = ["full"] }
+toml = "1"
